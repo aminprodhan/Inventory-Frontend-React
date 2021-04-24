@@ -1,12 +1,10 @@
 
 import isEmpty from 'lodash/isEmpty';
-import {SET_CURRENT_USER , SET_DRAWER_BOOLEAN} from '../actions/user_types';
+import {SET_CURRENT_USER , SET_DRAWER_BOOLEAN,SET_ADMIN_DATA} from '../actions/user_types';
 const initialState = {
-    isAuthenticated: false,
-    isUserLogin: null,
-    users:[],
-    userRoleList:[],
-    drawerOpen:true,
+    products:[],
+    categories:[],
+    orders:[],
 }
 export default (state = initialState, action = {}) =>
 {
@@ -17,13 +15,11 @@ export default (state = initialState, action = {}) =>
                 ...state,
                 drawerOpen:action.value,
             }
-        case SET_CURRENT_USER:
+        case SET_ADMIN_DATA:
             return {
-                isAuthenticated: true,
-                isUserLogin: action.user,
+                ...state,
+                orders: action.data.orders,
             };   
         default: return state;
     }
-
-
 }

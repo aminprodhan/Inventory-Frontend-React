@@ -1,25 +1,13 @@
-import { createNewUser, getAccessTokenName,apiGetUsers } from '../common/config';
-import { getCookieKeyInfo } from '../common/CookieService';
-import { CREATE_USER, SET_CURRENT_USER,SET_CURRENT_USER_EXIST,
-  SET_CURRENT_USER_NOT_FOUND ,SET_REFRESH_STORETRANSECTION,
-   SET_USERS_LIST} from './user_types';
+import { createNewUser, getAccessTokenName,apiGetUsers,try_login } from '../common/config';
+import { SET_CURRENT_USER} from './user_types';
+import {defaultRouteLink,dispatchLoginAction} from '../common/config';
+import {getCookieKeyInfo,setCookie,removeCookie} from '../common/CookieService';
+
+export const ExpiresAt=60 * 24;
 
 export function setCurrentUser(user) {
   return {
     type: SET_CURRENT_USER,
-    user:user,
-  };
-}
-
-export function logout() {
-  return dispatch => {
-
-  }
-}
-
-export function setCurrentUserExist(user) {
-  return {
-    type: SET_CURRENT_USER_EXIST,
     user:user,
   };
 }
@@ -31,79 +19,46 @@ export function checkValidUser(type,msg) {
   };
 }
 
-export function isPropCheck(){
-
-  return dispatch => {
-   return {
-     type : "hello"
-   }
-  }
-}
-
 export function login(data) {
-  return dispatch => {
-    dispatch(setCurrentUser(999));
-  }
-}
 
+  return async (dispatch)=>{
 
-export function updateStoreInvoice(data)
-{
-      return {
-          type:"SET_REFRESH_STORETRANSECTION",
-          updateinvoiceTransection:data,
-      }
+    const apiLink=try_login;
+    const requestOptions = {
+       method: 'POST',
+       headers: { 'Content-Type': 'application/json' },
+       body: JSON.stringify({ 
+         reqData:data,
+          // username:data.user_signin_name,
+          // password:data.user_signin_password,
+      })
+   };
 
-}
-export const getUsers=()=>{
-
-    return async (dispatch,getState)=>{
-
-      const tokenId=getCookieKeyInfo(getAccessTokenName);
-      const apiLink=apiGetUsers;
-      const response = await fetch(apiLink);
-      if(!response.ok){
-            throw new Error('Something went wrong..')
-      }
-      const resData=await response.json();
-      if(resData.status == 0)
-          throw new Error(resData.msg);
-      dispatch({
-          type:SET_USERS_LIST,
-          data:resData.list,
-          role_list:resData.role_list,
-      });
-
+    const response = await fetch(apiLink,requestOptions);
+    if(!response.ok){
+          throw new Error('Something went wrong..')
     }
-}
-export const createUser=(data)=>{
+    const resData=await response.json();
+    console.log('status='+resData.status);
+    if(resData.status == 0 || typeof resData.status == 'undefined')
+         throw new Error(resData.msg);
 
-  return async (dispatch,getState)=>{
+        if(!data.isChecked)
+        {
+            setCookie("uinfo",resData.uinfo);
+        }
+        else{
 
-     const tokenId=getCookieKeyInfo(getAccessTokenName);
+            let date=new Date();
+            date.setTime(date.getTime() + (ExpiresAt * 60 * 1000));
+            let options={
+                path:'/',expires :date,
+            }
+            setCookie("uinfo",resData.uinfo,options);
 
-     const apiLink=createNewUser;
-     const requestOptions = {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ 
-            reqData:data,
-            tokenId:tokenId,
-        })
-    };
+        }     
+        dispatch(dispatchLoginAction(resData.uinfo));
 
-     const response = await fetch(apiLink,requestOptions);
-     if(!response.ok){
-           throw new Error('Something went wrong..')
-     }
-     const resData=await response.json();
-     if(resData.status == 0)
-          throw new Error(resData.msg);
+ }
 
-      dispatch({
-          type:CREATE_USER,
-          data:resData.list,
-      });
-
-  }
 }

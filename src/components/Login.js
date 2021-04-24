@@ -3,7 +3,7 @@ import React,{useRef,useState,useEffect}  from 'react';
 import ImgLogo from '../assets/images/logo2.png';
 
 import axios from 'axios';
-import {getApiServerLink,getAccessTokenName,getApiServerDashboard} from '../common/config';
+import {getApiServerLinkDataApi,getAccessTokenName,getApiServerDashboard} from '../common/config';
 import Button from '@material-ui/core/Button';
 import Alert from 'react-bootstrap/Alert';
 import {getCookieKeyInfo,setCookie,removeCookie} from '../common/CookieService';
@@ -11,7 +11,7 @@ import {defaultRouteLink,dispatchLoginAction} from '../common/config';
 import { connect } from 'react-redux';
 import {useDispatch,useSelector} from 'react-redux';
 import {withRouter,Redirect } from "react-router-dom";
-
+import * as authAction from '../actions/authActions';
 
 
 const ExpiresAt=60 * 24;
@@ -31,7 +31,13 @@ const LoginPage=(props)=>{
 
     useEffect(() => {
         if(props.is_login)
-            window.location=defaultRouteLink+'/manage-task';
+           {
+                if(isLoginExit.role_id == '1')
+                    window.location=defaultRouteLink+"/admin_dashboard";
+                else
+                    window.location=defaultRouteLink+'/dashboard';
+                //window.location=defaultRouteLink+'/';
+           } 
         else if(userInfo.user_signin_name != '' && userInfo.user_signin_password != '')
             setSignButtonDisabled(false);
         else
@@ -51,7 +57,8 @@ const LoginPage=(props)=>{
             [e.target.name]:e.target.value,
         });
     }
-    const isValidSignIn=(e)=>{
+    const isValidSignIn=async(e)=>{
+
         e.preventDefault();
 
         setUserInfo({
@@ -60,71 +67,30 @@ const LoginPage=(props)=>{
 
         });
         setSignButtonDisabled(true);
-        let formData={
-            username : userInfo.user_signin_name,
-            password : userInfo.user_signin_password,
+        let info=authAction.login(userInfo);
+        try{
+            await dispatch(info);
         }
-        axios.post(getApiServerLink+"api/auth/UserLogin",  formData)
-              .then(res => {
-                    setUserInfo({
-                        ...userInfo,
-                        "isBtnClick":false,
-                    });
-                    setSignButtonDisabled(false);
-                    const options={path:'/'};
+        catch(err){
 
-                    if(res.data.status == '1')
-                    {
-                        if(!userInfo.isChecked)
-                        {
-                            setCookie("userInfo",res.data.info,options);
-                            setCookie("userId",res.data.user_id,options);
-                        }
-                        else{
+            setShow(true);
+            setUserInfo({
+                ...userInfo,
+                "errors":err.message,
+                "isBtnClick":false,
+            });
+            setSignButtonDisabled(false);
+        }
 
-                            let date=new Date();
-                            date.setTime(date.getTime() + (ExpiresAt * 60 * 1000));
-                            let options={
-                                path:'/',expires :date,
-                            }
-                            setCookie("userInfo",res.data.info,options);
-                            setCookie("userId",res.data.user_id,options);
-
-                        }
-                          let info={
-                                    userId:res.data.user_id,
-                                    userInfo:res.data.info,
-                                };
-                            dispatch(dispatchLoginAction(info));
-                    }
-                    else{
-                        setShow(true);
-                        setUserInfo({
-                            ...userInfo,
-                            "errors":res.data.msg,
-                            "isBtnClick":false,
-                        });
-                    }
-
-
-
-
-
-
-            }).catch(function(err){
-                setShow(true);
-                setUserInfo({
-                    ...userInfo,
-                    "errors":JSON.stringify(err),
-                    "isBtnClick":false,
-                });
-                setSignButtonDisabled(false);
-            });;
     }
     //console.log("isLogi"+isLoginExit);
     if(typeof isLoginExit != 'undefined' && isLoginExit != null)
-       window.location=defaultRouteLink+'/manage-task';
-
+       {
+           if(isLoginExit.role_id == '1')
+                window.location=defaultRouteLink+"/admin_dashboard";
+            else
+                window.location=defaultRouteLink+'/dashboard';
+       }
     return(
         <div className="account-page">
             <div className="container d-flex h-100">

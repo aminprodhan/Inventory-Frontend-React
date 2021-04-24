@@ -8,10 +8,13 @@ import {
 } from "react-router-dom";
 import LoginPage from "./components/Login";
 import Header from "./components/Header";
+import HeaderCustomer from "./components/HeaderCustomer";
 import Dashboard from "./components/Dashboard";
+import Products from "./components/customer/Products";
+import ManageProducts from "./components/admin/products/ManageProducts";
+
+
 import { connect } from "react-redux";
-
-
 import {
     defaultRouteLink,
     getAccessTokenName,
@@ -23,13 +26,18 @@ import {
     setCookie,
     removeCookie
 } from "./common/CookieService";
+import {useDispatch,useSelector} from 'react-redux';
 
 
 export const Routes = props => {
+    const dispatch=useDispatch();
     let isLoginExit = getCookieKeyInfo(getAccessTokenName);
+
     useEffect(() => {
         isLoginExit = getCookieKeyInfo(getAccessTokenName);
-    }, [props]);
+    }, [dispatch]);
+
+    //console.log("props data="+isLoginExit);
 
     return (
         <Switch>
@@ -42,14 +50,31 @@ export const Routes = props => {
                 exact
                 path="*"
                 render={() =>
-                    isLoginExit ? (
-                        <Header>
-                            <Route
-                                exact
-                                path={defaultRouteLink + "/admin_dashboard"}
-                                component={Dashboard}
-                            />    
-                        </Header>
+                    isLoginExit && typeof isLoginExit != 'undefined' ? (
+                        (isLoginExit.role_id == 1) ? (
+                            <Header>
+                                <Route
+                                    exact
+                                    path={defaultRouteLink + "/admin_dashboard"}
+                                    component={Dashboard}
+                                />    
+                                <Route
+                                    exact
+                                    path={defaultRouteLink + "/manage-products"}
+                                    component={ManageProducts}
+                                /> 
+                                
+                            </Header>
+                        ) : (
+                            <HeaderCustomer>
+                                <Route
+                                    exact
+                                    path={defaultRouteLink + "/dashboard"}
+                                    component={Products}
+                                />    
+                            </HeaderCustomer>
+                        )
+                        
                     ) : (
                         <Route component={LoginPage} />
                     )

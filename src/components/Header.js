@@ -77,7 +77,7 @@ const Header = props => {
     };
 
     return (
-        <div className="main-wrapper slide-nav" style={{marginTop:20}}>
+        <div className="main-wrapper slide-nav" style={{marginTop:5}}>
             <NavBar {...props} /> 
         </div>
     );

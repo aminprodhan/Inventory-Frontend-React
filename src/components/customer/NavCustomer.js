@@ -118,7 +118,6 @@ const useStyles = makeStyles((theme) => ({
           easing: theme.transitions.easing.sharp,
           duration: theme.transitions.duration.leavingScreen,
         }),
-        backgroundColor:'#d50000'
       },
       appBarShift: {
         //width: `calc(100% - ${drawerWidth}px)`,
@@ -164,26 +163,22 @@ const useStyles = makeStyles((theme) => ({
 
   }));
   
-  export default function NavBar(props) {
+  export default function NavCustomer(props) {
 
     const dispatch=useDispatch();
-    const open=useSelector(state=>state.auth.drawerOpen);
+    //const open=useSelector(state=>state.auth.drawerOpen);
     const userInfo=getCookieKeyInfo(getAccessTokenName);
 
     const classes = useStyles();
     const theme = useTheme();
     const [anchorEl, setAnchorEl] = React.useState(null);
     const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
-    const [menuList, setMenuList] = useState([
-      {id:1,name:'Product',sub_menu:[{
-        id:11,name:'Manage-Products',link_id:'manage-products'
-      }]}
-    ]);
+    const [menuList, setMenuList] = useState([]);
     const [menuState, setMenuState] = useState({});
     const isMenuOpen = Boolean(anchorEl);
     const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
     const [loading, setLoading] = useState([]);
-    const [opens, setOpen] = React.useState(true);
+    const [open, setOpen] = React.useState(false);
 
     const handleLoginSoftware=()=>{
         //window.location=getApiMainSoftware;
@@ -221,13 +216,16 @@ const useStyles = makeStyles((theme) => ({
     const handleMenuClose = () => {
       setAnchorEl(null);
       handleMobileMenuClose();
+      
+
+
     };
 
     const handleLogout = () => {
         setAnchorEl(null);
         handleMobileMenuClose();
         resetSession(function(){
-           props.history.push(defaultRouteLink + "/admin_login");
+            props.history.push(defaultRouteLink+"admin_login");
         });
 
       };
@@ -247,9 +245,11 @@ const useStyles = makeStyles((theme) => ({
         open={isMenuOpen}
         onClose={handleMenuClose}
       >
+        {/* <MenuItem onClick={handleMenuClose}>Profile</MenuItem> */}
         <MenuItem onClick={handleLogout}>Logout</MenuItem>
       </Menu>
     );
+  
     const mobileMenuId = 'primary-search-account-menu-mobile';
     const renderMobileMenu = (
       <Menu
@@ -367,7 +367,8 @@ const useStyles = makeStyles((theme) => ({
                                     </Link>
                             </ListSubheader>
                         }
-                        className={classes.root_navbar}>
+                        className={classes.root_navbar}
+                        >
                         {menuList.map(function(item, index) {
                                 return (
                                     <div>

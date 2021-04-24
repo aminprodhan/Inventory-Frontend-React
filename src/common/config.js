@@ -13,12 +13,16 @@ export function getCurrentDate(separator = "") {
 }
 
 
-//export const getApiServerLink="http://localhost:8000/";
-export const getApiServerLink="https://task.cursorltd.com/";
-//export const getApiServerLink="https://demo.task.infoagebd.com/";
+export const getApiServerLink="http://localhost:8080/Inventory-Backend/src/";
+
 export const getApiServerLinkDataApi = getApiServerLink+"api/";
 export const getApiServerDashboard =getApiServerLink+"admin_dashboard/";
 export const defaultRouteLink = "";
+
+export const try_login="Inventory-Backend/src/controller/api/AuthLogin.php";
+export const apiProductsInfo="Inventory-Backend/src/controller/api/Products.php";
+
+
 export const createNewUser=getApiServerLinkDataApi+"admin/setting/createNewUser";
 export const apiGetUsers=getApiServerLinkDataApi+"admin/setting/getUsers";
 export const apiProjectsInfo=getApiServerLinkDataApi+"admin/projects/manageProject";
@@ -37,7 +41,7 @@ export const apiProjectInfoByUser=getApiServerLinkDataApi+"admin/projects/getPro
 
 //export const defaultRouteLink = "/e-store";
 
-export const getAccessTokenName = "userId";
+export const getAccessTokenName = "uinfo";
 export const getAccessTokenNameInfo = "userInfo";
 
 
