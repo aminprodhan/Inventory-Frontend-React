@@ -11,7 +11,7 @@ import NavCustomer from './customer/NavCustomer';
 const HeaderCustomer=props=>{
    
     return(
-        <div className="main-wrapper slide-nav">
+        <div className="main-wrapper slide-nav" style={{backgroundColor:'#fff'}}>
             <NavCustomer {...props} /> 
         </div>
     )

@@ -10,34 +10,51 @@ import * as productsAction from '../../../actions/productsActions';
 
 const CreateProduct=(props)=>{
     const dispatch=useDispatch();
-    const initState={
+    const refFile=useRef(null);
+    const [ errors, setErrors ] = useState({})
+    let initState={
         name:'',
         desc:'',
         sku:'',
         categoryId:'',
         price:'',
         isErrors:false,
-        errors:{
-            sku:false,
-            name:false,
-            categoryId:false,
-            price:false,
-            product_image:false,
-        },
+        product_image:'',
+        isImgUpdate:false,
         errorsMsg:'',
         isUpdate:false,
         updateId:0,
         btnText:'Submit',
     }
     const info=useSelector(state=>state.products_admin);
+    const pUrl=info.imgProductUrl;
+
     const [validated, setValidated] = useState(false);
-    //console.log("info="+JSON.stringify(info.categories));
+    const [formData,setFormData]=useState(initState);
+    useEffect(() => {
+        if(info.updateItem){
+            setFormData({
+                ...formData,
+                name:info.updateItem.name,
+                sku:info.updateItem.sku,
+                categoryId:info.updateItem.category_id,
+                price:info.updateItem.price,
+                desc:info.updateItem.description,
+                product_image:pUrl+""+info.updateItem.image,
+                updateId:info.updateItem.id,
+                btnText:'Update'
+            });
+        }
+        else{
+            setFormData(initState);
+        }
+    },[info.updateItem]);
+
     let categories=info.categories.map(item => {
         return(
-            <option value={item.id}>{item.category_name}</option>
+            <option selected={formData.categoryId == item.id} value={item.id}>{item.category_name}</option>
         )
     })
-    const [formData,setFormData]=useState(initState);
     const handleInput=event=>{
         const { name, files, value } = event.target;
         setFormData(oldState => ({
@@ -45,47 +62,71 @@ const CreateProduct=(props)=>{
             [name]: value
         }));
     }
+    const findFormErrors = () => {
+        const { name, sku, categoryId, price,product_image } = formData
+        const newErrors = {}
+        if ( !name || name === '' ) newErrors.name = 'Name is required!'
+        else if ( name.length > 30 ) newErrors.name = 'Name is too long!'
+        if ( !sku || sku === '' ) newErrors.sku = 'SKU is required!'
+        if ( !categoryId || categoryId === '' ) newErrors.categoryId = 'select a Category!'
+        if ( !price || price <=0 ) newErrors.price = 'Price must be grater than zero'
+        if ( !product_image || product_image == '' ) newErrors.product_image = 'Product image is required!'
+        //newErrors.sku = 'SKU is required!'
+        return newErrors
+    }
     const handleFormSubmit=async event=>{
         const form = event.currentTarget;
         event.preventDefault();
-        if (form.checkValidity() === false) {
-            event.stopPropagation();
+        const newErrors = findFormErrors();
+        if ( Object.keys(newErrors).length > 0 ) {
+            setErrors(newErrors)
         }
         else{
             
             let actions=productsAction.saveProductInfo(formData);
             try{
                 await dispatch(actions);
+                setFormData(initState);
+                refFile.current.value=null;
+                setErrors({});
+                handleRefresh();
             }
             catch(err){
-                setFormData(oldState => ({
-                    ...oldState,
-                    errors: {
-                        sku:true,
-                    }
-                }));
-            }
-            
+                setErrors({});
+                const parseJson=JSON.parse(err.message);
+                parseJson.map(e => {
+                    errors[e.key]=e.msg;
+                });
+                setErrors(errors);
+       
+            }    
         }
-        setValidated(true);
-        
     }
     const handleRefresh=()=>{
-
+        dispatch({
+            type:'ItemRowUpdate',
+            value:null,
+        })
     }
     const changephoto = event => {
         const file = event.target.files[0];
+
+        if(typeof file == 'undefined')
+            return 0;
+
         if (!file.name.match(/\.(jpg|jpeg|png|gif)$/)){
             setFormData(oldState => ({
                 ...oldState,
-                product_image: ''
+                product_image: '',
+                isImgUpdate:false,
             }));
             alert("your image is invalid format");
         }
         else if (file.size > 1048576) {
             setFormData(oldState => ({
                 ...oldState,
-                product_image: ''
+                product_image: '',
+                isImgUpdate:false,
             }));
             alert("your image too long");
         } else {
@@ -93,15 +134,15 @@ const CreateProduct=(props)=>{
             reader.onload = event => {
                 setFormData(oldState => ({
                     ...oldState,
-                    product_image: event.target.result
+                    product_image: event.target.result,
+                    isImgUpdate:true,
                 }));
             };
             reader.readAsDataURL(file);
         }
     };
-    //validated={validated}
     return(
-        <Form noValidate validated={validated} onSubmit={handleFormSubmit} encType="multipart/form-data">
+        <Form  noValidate onSubmit={handleFormSubmit} encType="multipart/form-data">
             <Form.Group controlId="formUserName">
                 <Form.Label>
                     Name
@@ -111,11 +152,11 @@ const CreateProduct=(props)=>{
                         onChange={handleInput}
                         name="name" 
                         type="input"
-                        isInvalid={!!formData.errors.name}
-                        required 
+                        autoComplete="off"
+                        isInvalid={!!errors.name}
                         placeholder="Enter Name" />
                 <Form.Control.Feedback type="invalid">
-                   Name is required!!.
+                    { errors.name }
                 </Form.Control.Feedback>
             </Form.Group>
             <Form.Group >
@@ -125,12 +166,13 @@ const CreateProduct=(props)=>{
                 <Form.Control
                         value={formData.sku} 
                         onChange={handleInput}
-                        isInvalid={!!formData.errors.sku}
+                        isInvalid={!!errors.sku}
                         name="sku" 
                         type="input"
+                        autoComplete="off"
                         placeholder="Enter SKU" />
                 <Form.Control.Feedback type="invalid">
-                    Unique sku is required!!.
+                    { errors.sku }
                 </Form.Control.Feedback>        
             </Form.Group>
             <Form.Group>
@@ -147,15 +189,14 @@ const CreateProduct=(props)=>{
             <Form.Group controlId="formPassword">
                     <Form.Label>Category</Form.Label>
                     <Form.Control
-                        value={formData.roleId}
-                        required 
-                        isInvalid={!!formData.errors.categoryId}
+                        value={formData.roleId} 
+                        isInvalid={!!errors.categoryId}
                         name="categoryId" as="select" onChange={handleInput}>
-                        <option value=""></option>
+                        <option selected={formData.categoryId == ''} value=""></option>
                         {categories}
                     </Form.Control>
                     <Form.Control.Feedback type="invalid">
-                        Category is required!!.
+                        { errors.categoryId }
                     </Form.Control.Feedback>
             </Form.Group>
             <Form.Group>   
@@ -166,12 +207,12 @@ const CreateProduct=(props)=>{
                         value={formData.price} 
                         onChange={handleInput}
                         name="price"
-                        isInvalid={!!formData.errors.price} 
-                        type="number"
-                        required 
+                        autoComplete="off"
+                        isInvalid={!!errors.price} 
+                        type="number"   
                         placeholder="Enter Price" />
                 <Form.Control.Feedback type="invalid">
-                   Price is required!!.
+                    { errors.price }
                 </Form.Control.Feedback>
             </Form.Group>
             <Form.Group>
@@ -181,12 +222,12 @@ const CreateProduct=(props)=>{
                 <Form.Control
                     onChange={changephoto}
                     name="product_image"
-                    required 
                     type="file"
-                    isInvalid={!!formData.errors.product_image} 
+                    ref={refFile}
+                    isInvalid={!!errors.product_image} 
                 />
                 <Form.Control.Feedback type="invalid">
-                   Valid image is required!!.
+                    { errors.product_image }
                 </Form.Control.Feedback>
                 <img
                     src={formData.product_image}

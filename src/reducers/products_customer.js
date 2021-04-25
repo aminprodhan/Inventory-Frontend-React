@@ -1,10 +1,11 @@
 
 import isEmpty from 'lodash/isEmpty';
-import {SET_CURRENT_USER , SET_DRAWER_BOOLEAN,SET_ADMIN_DATA} from '../actions/user_types';
+import {SET_CUSTOMER_DATA , SET_DRAWER_BOOLEAN,SET_ADMIN_DATA} from '../actions/user_types';
 const initialState = {
     products:[],
     categories:[],
     orders:[],
+    imgProductUrl:'',
 }
 export default (state = initialState, action = {}) =>
 {
@@ -15,10 +16,11 @@ export default (state = initialState, action = {}) =>
                 ...state,
                 drawerOpen:action.value,
             }
-        case SET_ADMIN_DATA:
+        case SET_CUSTOMER_DATA:
             return {
                 ...state,
-                orders: action.data.orders,
+                products: action.data.products,
+                imgProductUrl: action.data.imgProductUrl,
             };   
         default: return state;
     }
