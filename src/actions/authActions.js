@@ -39,7 +39,6 @@ export function login(data) {
           throw new Error('Something went wrong..')
     }
     const resData=await response.json();
-    console.log('status='+resData.status);
     if(resData.status == 0 || typeof resData.status == 'undefined')
          throw new Error(resData.msg);
 
