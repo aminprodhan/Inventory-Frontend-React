@@ -42,7 +42,7 @@ export default function ProductCard(props) {
     
   return (
     <Card className={classes.root}>
-      <CardActionArea>
+      <CardActionArea onClick={() => props.handleAddToCart(item)}>
         <CardMedia
           component="img"
           alt="Contemplative Reptile"
@@ -61,7 +61,10 @@ export default function ProductCard(props) {
       </CardActionArea>
       <CardActions>
         <div className="d-flex justify-content-center flex-wrap" style={{width:'100%'}}>
-            {
+          <Button onClick={() => props.handleAddToCart(item)} variant="primary" size="sm" block>
+              View
+          </Button>
+            {/* {
                 (existed_item_up) ? (
                     <ToggleButtonGroup   type="checkbox" value={value} 
                             onChange={(val) => handleChange(val,item)} style={{width:'100%',backgroundColor:'#454365'}}>
@@ -74,7 +77,7 @@ export default function ProductCard(props) {
                         Add To Cart
                     </Button>
                 )
-            }
+            } */}
              
         </div>
             

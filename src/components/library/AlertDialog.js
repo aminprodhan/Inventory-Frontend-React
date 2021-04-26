@@ -13,6 +13,7 @@ const  AlertDialog=(props)=> {
       <div>
         <Dialog
           onBackdropClick="false"
+          style={{zIndex:10000}}
           open={props.open}
           onClose={()=>props.handleDialogClose()}
           aria-labelledby="alert-dialog-title"

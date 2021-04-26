@@ -3,6 +3,8 @@ import {useDispatch,useSelector} from 'react-redux';
 import * as productsCustomerAction from '../../actions/productsCustomerAction';
 import ProductCard from './ProductCard';
 import * as cartAction from '../../actions/cartAction';
+import ModalDynamic from "../modal/ModalDynamic";
+import Button from 'react-bootstrap/Button'
 
 const Products=(props)=>{
 
@@ -10,17 +12,33 @@ const Products=(props)=>{
     const info=useSelector(state=>state.products_customer);
     const myCart=useSelector(state=>state.cart);
     const rootUrl=info.imgProductUrl;
-
-
-    //console.log("cart="+JSON.stringify(myCart)); //addedItems
+    const modalInfoInit={
+        isModalShow:false,
+        modalText:'',
+        modalHeaderBg:'',
+        data:null,
+    }
+    const [modalInfo,setModalInfo]=useState(modalInfoInit);
 
     useEffect(() => {
         getProductsInfo();
     },[]);
-
+    const handleModalClose=()=>{
+        setModalInfo({
+            ...modalInfo,
+            isModalShow:false,
+        });
+    }
     const handleAddToCart=(item)=>{
-        dispatch(cartAction.addToCart(item));
-      }
+        //dispatch(cartAction.addToCart(item));
+        setModalInfo({
+            ...modalInfo,
+            isModalShow:true,
+            modalText:"Task => "+item.name,
+            data:item,
+        });
+
+    }
     const handleRemoveFromCart=(item)=>{
         dispatch(cartAction.subtractQuantity(item.id));
     }
@@ -44,18 +62,33 @@ const Products=(props)=>{
     })
 
     return(
-        <div className="col-12">
-            <div className="row justify-content-left">
-                <div class="col-12 p-2">
-                    <div className="row justify-content-left">
-                        <h2 style={{margin:0,padding:0}}>Our Products</h2>
-                    </div>
-                    <div className="d-flex justify-content-left flex-wrap">
-                        {Products}
+        <>
+            <div className="col-12">
+                <div className="row justify-content-left">
+                    <div class="col-12 p-2">
+                        <div className="d-flex">
+                            <div className="p-2 w-100">
+                                <h2 style={{margin:0,padding:0}}>Our Products</h2>
+                            </div>
+                            <div className="p-2 flex-lg-shrink-0">
+                                <Button onClick={() => {}} variant="danger" size="lg" block>
+                                    My Orders
+                                </Button>
+                            </div>
+                        </div>
+                        <div className="d-flex justify-content-left flex-wrap">
+                            {Products}
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
+            <ModalDynamic 
+                  showModal={modalInfo.isModalShow}
+                  handleModalClose={handleModalClose}
+                  modalTitle={modalInfo.modalText}
+                  data={modalInfo.data}  
+            />
+        </>
     )
 }
 export default Products;

@@ -25,6 +25,7 @@ export const apiDeleteProduct="Inventory-Backend/src/controller/api/admin/Produc
 
 
 export const apiCustomerHomePage="Inventory-Backend/src/controller/api/customers/Products.php";
+export const apiMakeOrder="Inventory-Backend/src/controller/api/customers/OrdersController.php";
 
 
 export const getAccessTokenName = "uinfo";
