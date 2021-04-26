@@ -18,7 +18,7 @@ import NotificationsIcon from '@material-ui/icons/Notifications';
 import MoreIcon from '@material-ui/icons/MoreVert';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import clsx from 'clsx';
-import {defaultRouteLink} from '../../common/config';
+import {defaultRouteLink,serverUrl} from '../../common/config';
 import Drawer from '@material-ui/core/Drawer';
 import Divider from '@material-ui/core/Divider';
 import { Link } from "react-router-dom";
@@ -184,11 +184,7 @@ const useStyles = makeStyles((theme) => ({
         //window.location=getApiMainSoftware;
     }
 
-    const fetchAllmenu = async () => {
-        const res = await axios.get(defaultRouteLink + "/api/get-menu-submenu");
-        setMenuList(res.data.list.list);
-        setLoading(false);
-    };
+   
     useEffect(() => {
         //fetchAllmenu();
     }, []);
@@ -225,7 +221,8 @@ const useStyles = makeStyles((theme) => ({
         setAnchorEl(null);
         handleMobileMenuClose();
         resetSession(function(){
-            props.history.push(defaultRouteLink+"admin_login");
+            //props.history.push(defaultRouteLink);
+            window.location=serverUrl;
         });
 
       };

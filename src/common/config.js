@@ -16,21 +16,28 @@ export const getApiServerLink="http://localhost:8080/Inventory-Backend/src/";
 
 export const getApiServerLinkDataApi = getApiServerLink+"api/";
 export const getApiServerDashboard =getApiServerLink+"admin_dashboard/";
-export const defaultRouteLink = "";
+export const serverUrl = "http://localhost:3000";
+export const defaultRouteLink = "/";
 
-export const try_login="Inventory-Backend/src/controller/api/AuthLogin.php";
-export const apiProductsInfo="Inventory-Backend/src/controller/api/Products.php";
-export const apiSaveProduct="Inventory-Backend/src/controller/api/admin/ProductCreate.php";
-export const apiDeleteProduct="Inventory-Backend/src/controller/api/admin/ProductDelete.php";
+export const try_login="/Inventory-Backend/src/controller/api/AuthLogin.php";
+export const apiProductsInfo="/Inventory-Backend/src/controller/api/Products.php";
+export const apiSaveProduct="/Inventory-Backend/src/controller/api/admin/ProductCreate.php";
+export const apiDeleteProduct="/Inventory-Backend/src/controller/api/admin/ProductDelete.php";
+export const apiUpdateOrderStatus="/Inventory-Backend/src/controller/api/admin/ChangeOrderStatus.php";
 
 
-export const apiCustomerHomePage="Inventory-Backend/src/controller/api/customers/Products.php";
-export const apiMakeOrder="Inventory-Backend/src/controller/api/customers/OrdersController.php";
+export const apiCustomerHomePage="/Inventory-Backend/src/controller/api/customers/Products.php";
+export const apiMakeOrder="/Inventory-Backend/src/controller/api/customers/OrdersController.php";
+export const apiMyOrder="/Inventory-Backend/src/controller/api/Orders.php";
 
 
 export const getAccessTokenName = "uinfo";
 export const getAccessTokenNameInfo = "userInfo";
 
+export const GetStatusColor=(status)=>{
+    const colors=["","text-primary","text-success","text-warning","text-danger"];
+    return colors[status];
+}
 
 export const userLogout = props => {
     removeCookie(getAccessTokenName);

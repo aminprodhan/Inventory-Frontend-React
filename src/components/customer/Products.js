@@ -5,6 +5,9 @@ import ProductCard from './ProductCard';
 import * as cartAction from '../../actions/cartAction';
 import ModalDynamic from "../modal/ModalDynamic";
 import Button from 'react-bootstrap/Button'
+import Badge from 'react-bootstrap/Badge'
+import {defaultRouteLink} from '../../common/config';
+import ProductDetails from "./ProductDetails";
 
 const Products=(props)=>{
 
@@ -19,7 +22,6 @@ const Products=(props)=>{
         data:null,
     }
     const [modalInfo,setModalInfo]=useState(modalInfoInit);
-
     useEffect(() => {
         getProductsInfo();
     },[]);
@@ -42,7 +44,6 @@ const Products=(props)=>{
     const handleRemoveFromCart=(item)=>{
         dispatch(cartAction.subtractQuantity(item.id));
     }
-
     const getProductsInfo=async()=>{
         let info=productsCustomerAction.getCustomerProductsInfo();
         try{
@@ -60,7 +61,9 @@ const Products=(props)=>{
             </div>
         )
     })
-
+    const handleMyOrder=()=>{
+        props.history.push(defaultRouteLink+"my-order");
+    }
     return(
         <>
             <div className="col-12">
@@ -71,8 +74,9 @@ const Products=(props)=>{
                                 <h2 style={{margin:0,padding:0}}>Our Products</h2>
                             </div>
                             <div className="p-2 flex-lg-shrink-0">
-                                <Button onClick={() => {}} variant="danger" size="lg" block>
-                                    My Orders
+                                <Button onClick={handleMyOrder} variant="danger" size="lg" block>
+                                    My Order <Badge variant="light">{info.orders.length}</Badge>
+                                    <span className="sr-only"></span>
                                 </Button>
                             </div>
                         </div>
@@ -86,8 +90,14 @@ const Products=(props)=>{
                   showModal={modalInfo.isModalShow}
                   handleModalClose={handleModalClose}
                   modalTitle={modalInfo.modalText}
-                  data={modalInfo.data}  
-            />
+                  data={modalInfo.data}
+                  {...props}  >
+                    <ProductDetails 
+                        data={modalInfo.data}
+                        {...props} 
+                        
+                        />  
+            </ModalDynamic>   
         </>
     )
 }

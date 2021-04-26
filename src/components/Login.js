@@ -38,13 +38,17 @@ const LoginPage=(props)=>{
                     window.location=defaultRouteLink+'/dashboard';
                 //window.location=defaultRouteLink+'/';
            } 
-        else if(userInfo.user_signin_name != '' && userInfo.user_signin_password != '')
+
+    },[isLoginExit]);
+
+    /*
+         else if(userInfo.user_signin_name != '' && userInfo.user_signin_password != '')
             setSignButtonDisabled(false);
         else
             setSignButtonDisabled(true);
 
-    },[props,userInfo.user_signin_name,userInfo.user_signin_password,isLoginExit]);
-
+    */
+    
     const handleCheck=()=>{
         setUserInfo({
             ...userInfo,
@@ -84,13 +88,13 @@ const LoginPage=(props)=>{
 
     }
     //console.log("isLogi"+isLoginExit);
-    if(typeof isLoginExit != 'undefined' && isLoginExit != null)
-       {
-           if(isLoginExit.role_id == '1')
-                window.location=defaultRouteLink+"/admin_dashboard";
-            else
-                window.location=defaultRouteLink+'/dashboard';
-       }
+    // if(typeof isLoginExit != 'undefined' && isLoginExit != null)
+    //    {
+    //        if(isLoginExit.role_id == '1')
+    //             window.location=defaultRouteLink+"/admin_dashboard";
+    //         else
+    //             window.location=defaultRouteLink+'/dashboard';
+    //    }
     return(
         <div className="account-page">
             <div className="container d-flex h-100">

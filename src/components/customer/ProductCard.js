@@ -64,21 +64,6 @@ export default function ProductCard(props) {
           <Button onClick={() => props.handleAddToCart(item)} variant="primary" size="sm" block>
               View
           </Button>
-            {/* {
-                (existed_item_up) ? (
-                    <ToggleButtonGroup   type="checkbox" value={value} 
-                            onChange={(val) => handleChange(val,item)} style={{width:'100%',backgroundColor:'#454365'}}>
-                            <ToggleButton variant="danger" value={3}>-</ToggleButton>
-                            <ToggleButton variant="danger" value={2}>{existed_item_up.quantity} in bag</ToggleButton>
-                            <ToggleButton variant="danger" value={1}>+</ToggleButton>
-                    </ToggleButtonGroup>
-                ) : (
-                    <Button onClick={() => props.handleAddToCart(item)} variant="primary" size="sm" block>
-                        Add To Cart
-                    </Button>
-                )
-            } */}
-             
         </div>
             
       </CardActions>

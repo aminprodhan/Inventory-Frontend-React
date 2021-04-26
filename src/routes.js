@@ -27,6 +27,7 @@ import {
     removeCookie
 } from "./common/CookieService";
 import {useDispatch,useSelector} from 'react-redux';
+import MyOrder from "./components/MyOrder";
 
 
 export const Routes = props => {
@@ -43,11 +44,6 @@ export const Routes = props => {
         <Switch>
             <Route
                 exact
-                path={defaultRouteLink + "/admin_login"}
-                component={LoginPage}
-            />
-            <Route
-                exact
                 path="*"
                 render={() =>
                     isLoginExit && typeof isLoginExit != 'undefined' ? (
@@ -55,22 +51,32 @@ export const Routes = props => {
                             <Header>
                                 <Route
                                     exact
-                                    path={defaultRouteLink + "/admin_dashboard"}
+                                    path="/"
                                     component={Dashboard}
                                 />    
                                 <Route
                                     exact
-                                    path={defaultRouteLink + "/manage-products"}
+                                    path={defaultRouteLink + "manage-products"}
                                     component={ManageProducts}
-                                /> 
+                                />
+                                <Route
+                                    exact
+                                    path={defaultRouteLink + "admin/my-order"}
+                                    component={MyOrder}
+                                />   
                                 
                             </Header>
                         ) : (
                             <HeaderCustomer>
                                 <Route
                                     exact
-                                    path={defaultRouteLink + "/dashboard"}
+                                    path={"/"}
                                     component={Products}
+                                /> 
+                                <Route
+                                    exact
+                                    path={defaultRouteLink + "my-order"}
+                                    component={MyOrder}
                                 />    
                             </HeaderCustomer>
                         )
