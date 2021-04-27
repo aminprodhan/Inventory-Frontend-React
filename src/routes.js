@@ -56,7 +56,7 @@ export const Routes = props => {
                                 />    
                                 <Route
                                     exact
-                                    path={defaultRouteLink + "manage-products"}
+                                    path={defaultRouteLink + "admin/manage-products"}
                                     component={ManageProducts}
                                 />
                                 <Route
@@ -82,7 +82,16 @@ export const Routes = props => {
                         )
                         
                     ) : (
-                        <Route component={LoginPage} />
+                        <>
+                            <Route 
+                                exact
+                                path={"/"}
+                                component={LoginPage} />
+                            <Route 
+                                exact
+                                path={defaultRouteLink + "admin/login"}
+                                component={AdminL} />
+                        </>        
                     )
                 }
             />

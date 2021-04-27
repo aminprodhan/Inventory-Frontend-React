@@ -16,6 +16,7 @@ import * as authAction from '../actions/authActions';
 
 const ExpiresAt=60 * 24;
 const LoginPage=(props)=>{
+    
     const userDefaultData={
         user_signin_name:'',
         user_signin_password:'',
@@ -36,19 +37,9 @@ const LoginPage=(props)=>{
                     window.location=defaultRouteLink+"/admin_dashboard";
                 else
                     window.location=defaultRouteLink+'/dashboard';
-                //window.location=defaultRouteLink+'/';
            } 
 
     },[isLoginExit]);
-
-    /*
-         else if(userInfo.user_signin_name != '' && userInfo.user_signin_password != '')
-            setSignButtonDisabled(false);
-        else
-            setSignButtonDisabled(true);
-
-    */
-    
     const handleCheck=()=>{
         setUserInfo({
             ...userInfo,
@@ -87,14 +78,6 @@ const LoginPage=(props)=>{
         }
 
     }
-    //console.log("isLogi"+isLoginExit);
-    // if(typeof isLoginExit != 'undefined' && isLoginExit != null)
-    //    {
-    //        if(isLoginExit.role_id == '1')
-    //             window.location=defaultRouteLink+"/admin_dashboard";
-    //         else
-    //             window.location=defaultRouteLink+'/dashboard';
-    //    }
     return(
         <div className="account-page">
             <div className="container d-flex h-100">
