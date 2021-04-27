@@ -1,7 +1,7 @@
 
 
 
-import {getAccessTokenName, apiProductsInfo,apiSaveProduct,apiDeleteProduct,apiUpdateOrderStatus } from '../common/config';
+import {getAccessTokenName, apiProductsInfo,apiSaveProduct,apiDeleteProduct,apiUpdateOrderStatus,apiUpdateProduct } from '../common/config';
 import { getCookieKeyInfo } from '../common/CookieService';
 import {SET_MY_ORDER, SET_PRODUCTS_INFO,SET_PRODUCTS_SAVE_INFO} from './user_types';
 
@@ -13,7 +13,7 @@ export const updateOrderStatus=(item,statusId)=>{
         const tokenId=sessionInfo.token_id;
 
         const data={
-            item:item,
+            orderId:item.id,
             statusId:statusId,
         }
 
@@ -48,13 +48,15 @@ export const deleteProductInfo=(data)=>{
 
         const sessionInfo=getCookieKeyInfo(getAccessTokenName);
         const tokenId=sessionInfo.token_id;
-
+        const itemInfo={
+            item_id:data.id,
+        }
         const apiLink=apiDeleteProduct;
         const requestOptions = {
            method: 'POST',
            headers: { 'Content-Type': 'application/json' },
            body: JSON.stringify({ 
-             reqData:data,
+             data:itemInfo,
              tokenId:tokenId,
           })
        };
@@ -65,10 +67,8 @@ export const deleteProductInfo=(data)=>{
         }
         const resData=await response.json();
         if(resData.status == 0 || typeof resData.status == 'undefined')
-             {
-                //console.log(JSON.stringify(resData.errors));
-                 throw new Error(JSON.stringify(resData.errors));
-             }
+              throw new Error(resData.msg);
+            
         dispatch({
             type:SET_PRODUCTS_SAVE_INFO,
             data:resData,
@@ -82,12 +82,15 @@ export const saveProductInfo=(data)=>{
         const sessionInfo=getCookieKeyInfo(getAccessTokenName);
         const tokenId=sessionInfo.token_id;
 
-        const apiLink=apiSaveProduct;
+        let apiLink=apiSaveProduct;
+        if(data.updateId > 0)
+            apiLink=apiUpdateProduct;
+
         const requestOptions = {
            method: 'POST',
            headers: { 'Content-Type': 'application/json' },
            body: JSON.stringify({ 
-             reqData:data,
+             data:data,
              tokenId:tokenId,
           })
        };
@@ -113,7 +116,7 @@ export const getProductsInfo=()=>{
     return async (dispatch,getState)=>{
 
       const sessionInfo=getCookieKeyInfo(getAccessTokenName);
-      const apiLink=apiProductsInfo+"?token_id="+sessionInfo.token_id;
+      const apiLink=apiProductsInfo+"?tokenId="+sessionInfo.token_id;
       const response = await fetch(apiLink);
       if(!response.ok){
             throw new Error('Something went wrong..')

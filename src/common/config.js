@@ -11,32 +11,28 @@ export function getCurrentDate(separator = "") {
     return date;
 }
 
-
-export const getApiServerLink="http://localhost:8080/Inventory-Backend/src/";
-
+export const serverUrl = "http://localhost:3000";
+export const getApiServerLink=serverUrl+"/Inventory-Backend/src";
 export const getApiServerLinkDataApi = getApiServerLink+"api/";
 export const getApiServerDashboard =getApiServerLink+"admin_dashboard/";
-export const serverUrl = "http://localhost:3000";
 export const defaultRouteLink = "/";
 export const defaultAdminRouteLink = "/admin/";
 export const defaultAdminDashBoardRouteLink = "/admin/dashboard";
 
-export const try_login="/Inventory-Backend/src/controller/api/AuthLogin.php";
-export const apiValidLogin="/Inventory-Backend/src/controller/api/admin/AdminAuth.php";
-export const apiProductsInfo="/Inventory-Backend/src/controller/api/Products.php";
-export const apiSaveProduct="/Inventory-Backend/src/controller/api/admin/ProductCreate.php";
-export const apiDeleteProduct="/Inventory-Backend/src/controller/api/admin/ProductDelete.php";
-export const apiUpdateOrderStatus="/Inventory-Backend/src/controller/api/admin/ChangeOrderStatus.php";
+export const try_login=getApiServerLink+"/controller/api/AuthLogin.php";
+export const apiValidLogin=getApiServerLink+"/controller/api/admin/AdminAuth.php";
+export const apiProductsInfo=getApiServerLink+"/controller/api/Products.php";
+export const apiSaveProduct=getApiServerLink+"/controller/api/admin/ProductCreate.php";
+export const apiUpdateProduct=getApiServerLink+"/controller/api/admin/ProductUpdate.php";
+export const apiDeleteProduct=getApiServerLink+"/controller/api/admin/ProductDelete.php";
+export const apiUpdateOrderStatus=getApiServerLink+"/controller/api/admin/ChangeOrderStatus.php";
 
-
-export const apiCustomerHomePage="/Inventory-Backend/src/controller/api/customers/Products.php";
-export const apiMakeOrder="/Inventory-Backend/src/controller/api/customers/OrdersController.php";
-export const apiMyOrder="/Inventory-Backend/src/controller/api/Orders.php";
-
+export const apiCustomerHomePage=getApiServerLink+"/controller/api/customers/Products.php";
+export const apiMakeOrder=getApiServerLink+"/controller/api/customers/OrdersController.php";
+export const apiMyOrder=getApiServerLink+"/controller/api/Orders.php";
 
 export const getAccessTokenName = "uinfo";
 export const getAccessTokenNameInfo = "userInfo";
-
 export const getAccessAdminTokenName = "uinfo_admin";
 
 

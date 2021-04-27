@@ -7,6 +7,7 @@ import CreateProduct from './CreateProduct';
 import * as productsAction from '../../../actions/productsActions';
 import {useDispatch,useSelector} from 'react-redux';
 import ProductList from './ProductList';
+import {defaultAdminRouteLink} from '../../../common/config';
 
 const ManageProducts=(props)=>{
     const dispatch=useDispatch();
@@ -29,6 +30,12 @@ const ManageProducts=(props)=>{
             
         }
     }
+    const handleDashboard=()=>{
+        props.history.push({
+            pathname: defaultAdminRouteLink+"dashboard",
+            state: { status_id: 0 }
+        });
+    }
 
     return(
         <div className="col-12" style={{marginLeft:10}}>
@@ -36,9 +43,18 @@ const ManageProducts=(props)=>{
             <div className="row justify-content-left">
                 <div class="col-8 p-4">
                     <div className="row justify-content-left">
-                        <h2 style={{margin:0,padding:0}}>Manage Product</h2>
+                        <div className="d-flex">
+                            <div className="p-2 w-100">
+                                <h2 style={{margin:0,padding:0}}>Manage Product</h2>
+                            </div>
+                            <div className="p-2 flex-lg-shrink-0">
+                                <Button onClick={()=>handleDashboard()} variant="danger" size="sm" block>
+                                    Dashboard
+                                </Button>
+                            </div>
+                        </div>
                     </div>
-                    <div className="row justify-content-left">
+                    <div className="row justify-content-left" style={{maxHeight:500,overflowY:'auto'}}>
                         <ProductList />
                     </div>
                 </div>

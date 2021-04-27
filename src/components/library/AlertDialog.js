@@ -12,7 +12,7 @@ const  AlertDialog=(props)=> {
     return (
       <div>
         <Dialog
-          onBackdropClick="false"
+          disableBackdropClick="false"
           style={{zIndex:10000}}
           open={props.open}
           onClose={()=>props.handleDialogClose()}

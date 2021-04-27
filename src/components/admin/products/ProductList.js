@@ -43,7 +43,6 @@ const ProductList=(props)=>{
         try{
             await dispatch(actions);
             setConfirmAlert({
-                ...confirmAlert,
                 message:'Are you sure ?',
                 open:false,
                 pendingProcess:false,

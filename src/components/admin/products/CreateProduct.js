@@ -22,7 +22,7 @@ const CreateProduct=(props)=>{
         product_image:'',
         isImgUpdate:false,
         errorsMsg:'',
-        isUpdate:false,
+        pendingProcess:false,
         updateId:0,
         btnText:'Submit',
     }
@@ -70,7 +70,7 @@ const CreateProduct=(props)=>{
         if ( !sku || sku === '' ) newErrors.sku = 'SKU is required!'
         if ( !categoryId || categoryId === '' ) newErrors.categoryId = 'select a Category!'
         if ( !price || price <=0 ) newErrors.price = 'Price must be grater than zero'
-        if ( !product_image || product_image == '' ) newErrors.product_image = 'Product image is required!'
+        //if ( !product_image || product_image == '' ) newErrors.product_image = 'Product image is required!'
         //newErrors.sku = 'SKU is required!'
         return newErrors
     }
@@ -83,6 +83,10 @@ const CreateProduct=(props)=>{
         }
         else{
             
+            setFormData(oldState => ({
+                ...oldState,
+                pendingProcess:false,
+            }));
             let actions=productsAction.saveProductInfo(formData);
             try{
                 await dispatch(actions);
@@ -235,10 +239,10 @@ const CreateProduct=(props)=>{
                     width="80px"
                 />                                                 
             </Form.Group>
-            <Button  variant="primary" type="submit">
+            <Button disabled={formData.pendingProcess ? true:false}  variant="primary" type="submit">
                 <AddIcon />{formData.btnText}
             </Button> 
-            <Button className="ml-3"
+            <Button disabled={formData.pendingProcess ? true:false} className="ml-3"
                 onClick={handleRefresh}
                 variant="warning" type="button">
                 <RefreshIcon /> Refresh

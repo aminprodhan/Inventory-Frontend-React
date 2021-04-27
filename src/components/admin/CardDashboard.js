@@ -12,7 +12,7 @@ import Button from 'react-bootstrap/Button'
 import ToggleButtonGroup from 'react-bootstrap/ToggleButtonGroup'
 import ToggleButton from 'react-bootstrap/ToggleButton'
 import {useDispatch,useSelector} from 'react-redux';
-import {defaultRouteLink} from '../../common/config';
+import {defaultAdminRouteLink} from '../../common/config';
 
 const height=250;
 
@@ -32,7 +32,7 @@ export default function CardDashboard(props) {
 
     const handleOrderDetails=(status_id)=>{
         props.history.push({
-            pathname: defaultRouteLink+"admin/my-order",
+            pathname: defaultAdminRouteLink+"my-order",
             state: { status_id: status_id }
         });
     }

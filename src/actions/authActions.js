@@ -24,11 +24,15 @@ export function loginAdmin(data) {
   return async (dispatch)=>{
 
     const apiLink=apiValidLogin;
+    const apiData={
+        username:data.user_signin_name,
+        password:data.user_signin_password,
+    }
     const requestOptions = {
        method: 'POST',
        headers: { 'Content-Type': 'application/json' },
        body: JSON.stringify({ 
-         data:data,
+         data:apiData,
       })
    };
     const response = await fetch(apiLink,requestOptions);

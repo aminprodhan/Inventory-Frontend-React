@@ -84,7 +84,7 @@ const MyOrder=(props)=>{
                         </p>
                         <p style={{margin:0,padding:0}}>{item.created_at}</p>
                         {
-                            (role_id == 1) ? 
+                            (role_id == 1 && item.order_status != 4) ? 
                                 (
                                     <Button onClick={()=>handleChangeStatus(item)} variant="danger" size="sm" block>
                                         Action

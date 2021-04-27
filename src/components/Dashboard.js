@@ -9,6 +9,7 @@ import Alert from 'react-bootstrap/Alert';
 import CardDashboard from './admin/CardDashboard';
 import {useDispatch,useSelector} from 'react-redux';
 import * as productsCustomerAction from '../actions/productsCustomerAction';
+import {SET_DRAWER_BOOLEAN} from '../actions/user_types';
 
  const Dashboard=(props)=>{
     const dispatch=useDispatch();
@@ -19,6 +20,11 @@ import * as productsCustomerAction from '../actions/productsCustomerAction';
         getMyOrder();
     },[]);
     const getMyOrder=async()=>{
+        dispatch({
+            type:SET_DRAWER_BOOLEAN,
+            value:true,
+        });
+
         let info=productsCustomerAction.getMyOrder();
         try{
             await dispatch(info);

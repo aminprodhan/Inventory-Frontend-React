@@ -176,7 +176,10 @@ const useStyles = makeStyles((theme) => ({
     const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
     const [menuList, setMenuList] = useState([
       {id:1,name:'Product',sub_menu:[{
-        id:11,name:'Manage-Products',link_id:'manage-products'
+        id:11,name:'Manage-Product',link_id:'manage-products'
+      }]},
+      {id:2,name:'Order',sub_menu:[{
+        id:12,name:'Manage-Order',link_id:'my-order'
       }]}
     ]);
     const [menuState, setMenuState] = useState({});
