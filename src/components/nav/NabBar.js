@@ -18,7 +18,7 @@ import NotificationsIcon from '@material-ui/icons/Notifications';
 import MoreIcon from '@material-ui/icons/MoreVert';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import clsx from 'clsx';
-import {defaultRouteLink,serverUrl} from '../../common/config';
+import {defaultRouteLink,serverUrl,defaultAdminRouteLink,defaultAdminDashBoardRouteLink} from '../../common/config';
 import Drawer from '@material-ui/core/Drawer';
 import Divider from '@material-ui/core/Divider';
 import { Link } from "react-router-dom";
@@ -40,7 +40,7 @@ import { SET_DRAWER_BOOLEAN } from '../../actions/user_types';
 import {userLogout,isLoginExist,resetSession} from "../../common/config";
 import {getAccessTokenName,getAccessTokenNameInfo} from '../../common/config';
 import { getCookieKeyInfo } from '../../common/CookieService';
-import axios from 'axios'
+
 
 const drawerWidth = 240;
 const useStyles = makeStyles((theme) => ({
@@ -223,7 +223,7 @@ const useStyles = makeStyles((theme) => ({
         setAnchorEl(null);
         handleMobileMenuClose();
         resetSession(function(){
-          window.location=serverUrl;
+          window.location=serverUrl+""+defaultAdminRouteLink+"login";
         });
 
       };
@@ -358,7 +358,7 @@ const useStyles = makeStyles((theme) => ({
                         subheader={
                             <ListSubheader component="div" id="nested-list-subheader">
                                     <Link
-                                        to={defaultRouteLink}>
+                                        to={defaultAdminDashBoardRouteLink}>
                                         Dashboard
                                     </Link>
                             </ListSubheader>
@@ -380,7 +380,7 @@ const useStyles = makeStyles((theme) => ({
                                                         <List component="div" disablePadding>
                                                             <ListItem button className={classes.nested}>
                                                                 <Link
-                                                                    to={defaultRouteLink + `${sub.link_id}`}>
+                                                                    to={defaultAdminRouteLink + `${sub.link_id}`}>
                                                                     {sub.name}
                                                                 </Link>
                                                             </ListItem>

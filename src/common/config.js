@@ -18,8 +18,11 @@ export const getApiServerLinkDataApi = getApiServerLink+"api/";
 export const getApiServerDashboard =getApiServerLink+"admin_dashboard/";
 export const serverUrl = "http://localhost:3000";
 export const defaultRouteLink = "/";
+export const defaultAdminRouteLink = "/admin/";
+export const defaultAdminDashBoardRouteLink = "/admin/dashboard";
 
 export const try_login="/Inventory-Backend/src/controller/api/AuthLogin.php";
+export const apiValidLogin="/Inventory-Backend/src/controller/api/admin/AdminAuth.php";
 export const apiProductsInfo="/Inventory-Backend/src/controller/api/Products.php";
 export const apiSaveProduct="/Inventory-Backend/src/controller/api/admin/ProductCreate.php";
 export const apiDeleteProduct="/Inventory-Backend/src/controller/api/admin/ProductDelete.php";
@@ -33,6 +36,9 @@ export const apiMyOrder="/Inventory-Backend/src/controller/api/Orders.php";
 
 export const getAccessTokenName = "uinfo";
 export const getAccessTokenNameInfo = "userInfo";
+
+export const getAccessAdminTokenName = "uinfo_admin";
+
 
 export const GetStatusColor=(status)=>{
     const colors=["","text-primary","text-success","text-warning","text-danger"];

@@ -3,7 +3,7 @@ import Cookie  from 'universal-cookie';
 
 const cookie=new Cookie();
 export const setCookie=(key,val,options)=>{
-    cookie.set(key,val,options);
+    cookie.set(key,val,{ path: '/' });
 }
 export const getCookieKeyInfo=(key)=>{
     return cookie.get(key); 

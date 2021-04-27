@@ -1,5 +1,6 @@
 
 import React,{useRef,useState,useEffect}  from 'react';
+import {SET_DRAWER_BOOLEAN} from '../../../actions/user_types';
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 import CreateProduct from './CreateProduct';
@@ -15,6 +16,11 @@ const ManageProducts=(props)=>{
     },[]);
 
     const getProductsInfo=async()=>{
+        dispatch({
+            type:SET_DRAWER_BOOLEAN,
+            value:false,
+        });
+
         let info=productsAction.getProductsInfo();
         try{
             await dispatch(info);

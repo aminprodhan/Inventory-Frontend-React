@@ -28,6 +28,7 @@ const LoginPage=(props)=>{
     const [userInfo,setUserInfo]=useState(userDefaultData);
     const [signButtonDisabled,setSignButtonDisabled]=useState(false);
     const [show, setShow] = useState(true);
+
     const isLoginExit=getCookieKeyInfo(getAccessTokenName);
 
     useEffect(() => {
@@ -40,6 +41,7 @@ const LoginPage=(props)=>{
            } 
 
     },[isLoginExit]);
+    
     const handleCheck=()=>{
         setUserInfo({
             ...userInfo,

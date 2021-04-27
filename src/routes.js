@@ -7,25 +7,20 @@ import {
     IndexRoute
 } from "react-router-dom";
 import LoginPage from "./components/Login";
+import AdminLogin from "./components/admin/AdminLogin";
 import Header from "./components/Header";
 import HeaderCustomer from "./components/HeaderCustomer";
 import Dashboard from "./components/Dashboard";
 import Products from "./components/customer/Products";
 import ManageProducts from "./components/admin/products/ManageProducts";
-
+import { useLocation } from 'react-router-dom'
+import { withRouter,Redirect } from "react-router-dom";
 
 import { connect } from "react-redux";
-import {
-    defaultRouteLink,
-    getAccessTokenName,
-    userLogout,
-    isLoginExist
+import {defaultRouteLink,defaultAdminRouteLink,getAccessTokenName,defaultAdminDashBoardRouteLink
 } from "./common/config";
 import {
-    getCookieKeyInfo,
-    setCookie,
-    removeCookie
-} from "./common/CookieService";
+    getCookieKeyInfo} from "./common/CookieService";
 import {useDispatch,useSelector} from 'react-redux';
 import MyOrder from "./components/MyOrder";
 
@@ -33,15 +28,10 @@ import MyOrder from "./components/MyOrder";
 export const Routes = props => {
     const dispatch=useDispatch();
     let isLoginExit = getCookieKeyInfo(getAccessTokenName);
-
-    useEffect(() => {
-        isLoginExit = getCookieKeyInfo(getAccessTokenName);
-    }, [dispatch]);
-
-    //console.log("props data="+isLoginExit);
-
+    const location = useLocation();
     return (
         <Switch>
+            
             <Route
                 exact
                 path="*"
@@ -51,20 +41,23 @@ export const Routes = props => {
                             <Header>
                                 <Route
                                     exact
-                                    path="/"
-                                    component={Dashboard}
-                                />    
-                                <Route
-                                    exact
-                                    path={defaultRouteLink + "admin/manage-products"}
-                                    component={ManageProducts}
+                                    path={defaultAdminRouteLink + "login"}
+                                    render = {() => <Redirect to={defaultAdminDashBoardRouteLink} />}
                                 />
                                 <Route
-                                    exact
-                                    path={defaultRouteLink + "admin/my-order"}
+                                    
+                                    path={defaultAdminDashBoardRouteLink}
+                                    component={Dashboard}
+                                />
+
+                                <Route   
+                                    path={defaultAdminRouteLink + "manage-products"}
+                                    component={ManageProducts}
+                                />
+                                <Route   
+                                    path={defaultAdminRouteLink + "my-order"}
                                     component={MyOrder}
-                                />   
-                                
+                                />
                             </Header>
                         ) : (
                             <HeaderCustomer>
@@ -89,12 +82,13 @@ export const Routes = props => {
                                 component={LoginPage} />
                             <Route 
                                 exact
-                                path={defaultRouteLink + "admin/login"}
-                                component={AdminL} />
-                        </>        
+                                path={defaultAdminRouteLink + "login"}
+                                component={AdminLogin} />
+                        </> 
                     )
                 }
             />
+
         </Switch>
     );
 };
