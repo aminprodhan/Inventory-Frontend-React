@@ -27,19 +27,6 @@ export default function ProductCard(props) {
 
   const classes = useStyles();
   const {item,rootUrl}=props;
-
-  const myCart=useSelector(state=>state.cart);
-  let existed_item_up= myCart.addedItems.find(c=> item.id === c.id);
-  const [value, setValue] = useState([1, 3]);
-  const handleChange = (val,item) =>{
-
-      if(val == 3)
-        props.handleAddToCart(item)
-      else if(val == 1)
-        props.handleRemoveFromCart(item)
-  }
-    
-    
   return (
     <Card className={classes.root}>
       <CardActionArea onClick={() => props.handleAddToCart(item)}>

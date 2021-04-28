@@ -61,7 +61,7 @@ const ProductDetails=(props)=>{
         let actions=productsCustomerAction.makeOrder(item,orderQty);
         try{
             await dispatch(actions);
-            window.location=defaultRouteLink+"my-order"
+            window.location=defaultRouteLink+"my-order";
         }
         catch(err){
             

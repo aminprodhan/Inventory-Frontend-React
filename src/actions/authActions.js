@@ -64,14 +64,16 @@ export function login(data) {
 
   return async (dispatch)=>{
 
+    const apiData={
+      username:data.user_signin_name,
+      password:data.user_signin_password,
+    }
     const apiLink=try_login;
     const requestOptions = {
        method: 'POST',
        headers: { 'Content-Type': 'application/json' },
        body: JSON.stringify({ 
-         reqData:data,
-          // username:data.user_signin_name,
-          // password:data.user_signin_password,
+         data:apiData,
       })
    };
 
