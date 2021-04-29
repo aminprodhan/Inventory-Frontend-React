@@ -12,7 +12,7 @@ export function getCurrentDate(separator = "") {
 }
 
 export const serverUrl = "http://localhost:3000";
-export const getApiServerLink=serverUrl+"/Inventory-Backend/src";
+export const getApiServerLink="/src";
 export const getApiServerLinkDataApi = getApiServerLink+"api/";
 export const getApiServerDashboard =getApiServerLink+"admin_dashboard/";
 export const defaultRouteLink = "/";
